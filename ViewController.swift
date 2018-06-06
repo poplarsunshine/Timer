@@ -21,13 +21,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        second = 60;
+        second = getSecend()
 
         timer = Timer.scheduledTimer(timeInterval: 1,
                                      target: self,
                                      selector: #selector(timerAction),
                                      userInfo: nil,
                                      repeats:true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,9 +57,37 @@ class ViewController: UIViewController {
     }
     
     @objc func timerAction(_ sender: Any) {
+
         second = second - 1
-        print("Second: \(second)")
+        
+        saveSecend(second)
+        
         timerLb.text = "\(second)"
+    }
+    
+    // Time IO
+    func saveSecend(_ aSecend: NSInteger) {
+        let tSecond = (TimeInterval)(aSecend)
+        let date = Date(timeIntervalSinceNow: tSecond)
+        
+        // Formatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss zz"
+        let dateString = dateFormatter.string(from: date)
+        // 持久化
+        let defaultStand = UserDefaults.standard
+        defaultStand.set(dateString, forKey: "TimerDateKey")
+    }
+    
+    func getSecend() -> NSInteger{
+        let defaultStand = UserDefaults.standard
+        let dateString = defaultStand.string(forKey: "TimerDateKey")
+        // Formatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss zz"
+        let date = dateFormatter.date(from: dateString!)
+        let aSecend = date?.timeIntervalSinceNow;
+        return (NSInteger)(aSecend!);
     }
 }
 
