@@ -7,15 +7,68 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    // Time IO
+    public func saveDateAfterSecend(_ aSecend: NSInteger) {
+        let tSecond = (TimeInterval)(aSecend)
+        let date = Date(timeIntervalSinceNow: tSecond)
+        // Formatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss zz"
+        let dateString = dateFormatter.string(from: date)
+        // 持久化
+        let defaultStand = UserDefaults.standard
+        defaultStand.set(dateString, forKey: "TimerDateKey")
+        
+        // 通知
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        let content = UNMutableNotificationContent()
+        content.title = ""
+        content.subtitle = ""
+        content.body = "Timer has run out"//内容
+        content.badge = 1
+        content.sound = UNNotificationSound.default()
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: tSecond, repeats: false)
+        let request = UNNotificationRequest.init(identifier: "LocalNotificationKey", content: content, trigger: trigger)
+        center.add(request)
+    }
+    
+    public func getSecend() -> NSInteger{
+        // 读取
+        let defaultStand = UserDefaults.standard
+        let dateString = defaultStand.string(forKey: "TimerDateKey")
+        // Formatter
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss zz"
+        let date = dateFormatter.date(from: dateString!)
+        let aSecend = date?.timeIntervalSinceNow;
+        return (NSInteger)(aSecend!);
+    }
+    
+    @objc func registerLocal() {
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+            if granted {
+                print("UNUserNotificationCenter Yay!")
+            } else {
+                print("UNUserNotificationCenter D'oh")
+            }
+        }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        self.registerLocal()
+        
         return true
     }
 
@@ -35,12 +88,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 

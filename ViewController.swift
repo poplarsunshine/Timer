@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class ViewController: UIViewController {
     // UI
@@ -15,19 +16,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var switchBtn: UIButton!
     @IBOutlet weak var resetBtn: UIButton!
 
-    var second: NSInteger!
+//    var second: NSInteger!
     var timer: Timer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        second = getSecend()
-
         timer = Timer.scheduledTimer(timeInterval: 1,
                                      target: self,
                                      selector: #selector(timerAction),
                                      userInfo: nil,
                                      repeats:true)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -39,8 +39,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func setTimeAction(_ sender: Any) {
-        second = 60;
-
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.saveDateAfterSecend(10)
         // 计时器继续
         timer.fireDate = Date.distantPast
     }
@@ -51,6 +51,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func resetAction(_ sender: UIButton) {
+        self.reset()
+    }
+    
+    func reset() {
         // 计时器暂停
         timer.fireDate = Date.distantFuture
         timerLb.text = ""
@@ -58,36 +62,18 @@ class ViewController: UIViewController {
     
     @objc func timerAction(_ sender: Any) {
 
-        second = second - 1
-        
-        saveSecend(second)
-        
-        timerLb.text = "\(second)"
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let second: NSInteger = delegate.getSecend()
+        if (second <= 0) {
+            self.reset()
+        } else {
+            timerLb.text = "\(second)"
+        }
     }
     
-    // Time IO
-    func saveSecend(_ aSecend: NSInteger) {
-        let tSecond = (TimeInterval)(aSecend)
-        let date = Date(timeIntervalSinceNow: tSecond)
+    // 提醒
+    func ringing() {
         
-        // Formatter
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss zz"
-        let dateString = dateFormatter.string(from: date)
-        // 持久化
-        let defaultStand = UserDefaults.standard
-        defaultStand.set(dateString, forKey: "TimerDateKey")
-    }
-    
-    func getSecend() -> NSInteger{
-        let defaultStand = UserDefaults.standard
-        let dateString = defaultStand.string(forKey: "TimerDateKey")
-        // Formatter
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss zz"
-        let date = dateFormatter.date(from: dateString!)
-        let aSecend = date?.timeIntervalSinceNow;
-        return (NSInteger)(aSecend!);
     }
 }
 
