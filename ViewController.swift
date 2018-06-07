@@ -11,6 +11,7 @@ import UserNotifications
 
 // TODO:
 /*
+ 0、归零持久化
  1、暂停状态持久化
  2、App开启时的通知
  3、UI
@@ -23,6 +24,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var switchBtn: UIButton!
     @IBOutlet weak var resetBtn: UIButton!
+    @IBOutlet weak var timeSlier: UISlider!
 
     var showSecond: NSInteger!
     var timer: Timer!
@@ -30,6 +32,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+
         timer = Timer.scheduledTimer(timeInterval: 1,
                                      target: self,
                                      selector: #selector(timerAction),
@@ -46,9 +49,25 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func setTimeAction(_ sender: Any) {
-        showSecond = 10
-        setTimerRunning(true)
+    // Slider
+    @IBAction func timeSliderBegin(_ slider: UISlider) {
+        setTimerRunning(false)
+        controlView.isHidden = true
+    }
+    
+    @IBAction func timeSlidering(_ slider: UISlider) {
+        let second = (NSInteger)(slider.value) * 60
+        updateShowTime(second)
+    }
+    
+    @IBAction func timeSliderDone(_ slider: UISlider) {
+        showSecond = (NSInteger)(slider.value) * 60
+        if (showSecond > 0) {
+            setTimerRunning(true)
+            controlView.isHidden = false
+        } else {
+            updateShowTime(showSecond)
+        }
     }
 
     @IBAction func runAction(_ sender: UIButton) {
@@ -95,6 +114,7 @@ class ViewController: UIViewController {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         showSecond = delegate.getSecend()
         updateShowTime(showSecond)
+        self.timeSlier.value = Float(showSecond)/60.0
 
         if (showSecond <= 0) {
             self.reset()

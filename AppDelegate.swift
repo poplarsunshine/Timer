@@ -17,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Time IO
     public func saveDateAfterSecend(_ aSecend: NSInteger) {
+        if aSecend <= 0 {
+            print("Warning: saveDateAfterSecend:\(aSecend)")
+            return
+        }
         let tSecond = (TimeInterval)(aSecend)
         let date = Date(timeIntervalSinceNow: tSecond)
         // Formatter

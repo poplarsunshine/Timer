@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,8 +19,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="60" translatesAutoresizingMaskIntoConstraints="NO" id="Osg-Za-bGQ">
+                                <rect key="frame" x="38" y="428" width="299" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="29" id="Uyc-lx-qrP"/>
+                                </constraints>
+                                <color key="minimumTrackTintColor" red="0.93834120040000002" green="0.42604979869999998" blue="0.2459692359" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="maximumTrackTintColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="thumbTintColor" red="0.76470588240000004" green="0.56470588239999997" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="timeSliderBegin:" destination="BYZ-38-t0r" eventType="touchDown" id="QDq-Q3-Csz"/>
+                                    <action selector="timeSliderDone:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gHd-tc-ffv"/>
+                                    <action selector="timeSliderDone:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="v9t-HN-gv5"/>
+                                    <action selector="timeSlidering:" destination="BYZ-38-t0r" eventType="valueChanged" id="Slb-RR-0q5"/>
+                                </connections>
+                            </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="win-EK-biA">
-                                <rect key="frame" x="93.5" y="477" width="188" height="40"/>
+                                <rect key="frame" x="93.5" y="100" width="188" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Fe1-fW-kH1"/>
                                     <constraint firstAttribute="width" constant="188" id="UaX-9I-iTB"/>
@@ -59,26 +75,16 @@
                                     <constraint firstAttribute="height" constant="50" id="uWO-Hw-wh1"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N3B-es-QLP" userLabel="temp">
-                                <rect key="frame" x="162" y="399" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="2WD-xz-D59"/>
-                                    <constraint firstAttribute="width" constant="50" id="rqH-UQ-CaS"/>
-                                </constraints>
-                                <state key="normal" title="1分钟"/>
-                                <connections>
-                                    <action selector="setTimeAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kYO-Qf-IEy"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="W8W-sU-LPY" secondAttribute="bottom" constant="70" id="0Ie-2U-o6g"/>
-                            <constraint firstItem="N3B-es-QLP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Bjh-Vk-EoK"/>
-                            <constraint firstItem="win-EK-biA" firstAttribute="top" secondItem="N3B-es-QLP" secondAttribute="bottom" constant="28" id="JRu-du-h79"/>
+                            <constraint firstItem="win-EK-biA" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="80" id="4Sw-bs-I5H"/>
+                            <constraint firstItem="Osg-Za-bGQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="Ai6-kl-dbO"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Osg-Za-bGQ" secondAttribute="trailing" constant="40" id="M1f-SR-PIp"/>
                             <constraint firstItem="W8W-sU-LPY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TPA-N7-b9e"/>
                             <constraint firstItem="win-EK-biA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gib-qT-QdL"/>
-                            <constraint firstItem="W8W-sU-LPY" firstAttribute="top" secondItem="win-EK-biA" secondAttribute="bottom" constant="30" id="kg3-m2-nS7"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Osg-Za-bGQ" secondAttribute="bottom" constant="210" id="oQz-qh-DG0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -86,6 +92,7 @@
                         <outlet property="controlView" destination="W8W-sU-LPY" id="nrd-N3-hkh"/>
                         <outlet property="resetBtn" destination="hVR-2a-tts" id="Z45-bN-FLE"/>
                         <outlet property="switchBtn" destination="Bs9-Qr-1cw" id="0QW-hZ-IDo"/>
+                        <outlet property="timeSlier" destination="Osg-Za-bGQ" id="lwk-3f-YEv"/>
                         <outlet property="timerLb" destination="win-EK-biA" id="ia2-eT-SC0"/>
                     </connections>
                 </viewController>
