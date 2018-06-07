@@ -10,7 +10,7 @@ import UIKit
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
     public var isRunning: Bool?
@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     @objc func registerLocal() {
         let center = UNUserNotificationCenter.current()
-        
+        center.delegate = self;
         center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
             if granted {
                 print("UNUserNotificationCenter Yay!")
@@ -103,6 +103,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+//    @available(iOS 10.0, *)
+//    func userNotificationCenter(center: UNUserNotificationCenter, willPresentNotification notification: UNNotification, withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void){
+//        let userInfo = notification.request.content.userInfo
+//        print("willPresentNotification:\(userInfo)")
+//        completionHandler([])
+//    }
+    
+    //在应用内展示通知
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler:
+        @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        print("willPresentNotification:\(userInfo)")
+        completionHandler([.alert, .sound])
+        
+        // 如果不想显示某个通知，可以直接用空 options 调用 completionHandler:
+        // completionHandler([])
     }
 }
 

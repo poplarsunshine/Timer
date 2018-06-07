@@ -11,11 +11,11 @@ import UserNotifications
 
 // TODO:
 /*
- 0、归零持久化
- 1、暂停状态持久化
- 2、App开启时的通知
- 3、UI
- 4、通知声音
+ [] 归零持久化
+ [] 暂停状态持久化
+ [] App开启时的通知
+ [] 通知声音
+ [] UI
  */
 
 class ViewController: UIViewController {
@@ -47,6 +47,12 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // Temp
+    @IBAction func start(_ sender: UIButton) {
+        showSecond = 10
+        setTimerRunning(true)
     }
     
     // Slider
