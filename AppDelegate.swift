@@ -13,6 +13,7 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    public var isRunning: Bool?
     
     // Time IO
     public func saveDateAfterSecend(_ aSecend: NSInteger) {

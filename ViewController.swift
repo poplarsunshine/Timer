@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var switchBtn: UIButton!
     @IBOutlet weak var resetBtn: UIButton!
 
-//    var second: NSInteger!
+    var showSecond: NSInteger!
     var timer: Timer!
 
     override func viewDidLoad() {
@@ -39,41 +39,59 @@ class ViewController: UIViewController {
     }
     
     @IBAction func setTimeAction(_ sender: Any) {
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        delegate.saveDateAfterSecend(10)
-        // 计时器继续
-        timer.fireDate = Date.distantPast
+        showSecond = 10
+        setTimerRunning(true)
     }
 
     @IBAction func runAction(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        timer.fireDate = sender.isSelected ? Date.distantFuture : Date.distantPast
+        setTimerRunning(sender.isSelected)
     }
     
     @IBAction func resetAction(_ sender: UIButton) {
         self.reset()
     }
     
+    // 设置Timer 暂停/继续
+    func setTimerRunning(_ isRunning: Bool) {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.isRunning = isRunning
+        switchBtn.isSelected = !isRunning
+        resetBtn.isEnabled = !isRunning
+        if (isRunning) {
+            //
+            let delegate = UIApplication.shared.delegate as! AppDelegate
+            delegate.saveDateAfterSecend(showSecond)
+            // 继续
+            timer.fireDate = Date.distantPast
+        } else {
+            // 暂停
+            timer.fireDate = Date.distantFuture
+            //
+            let center = UNUserNotificationCenter.current()
+            center.removeAllPendingNotificationRequests()
+        }
+    }
+    
     func reset() {
         // 计时器暂停
-        timer.fireDate = Date.distantFuture
+        setTimerRunning(false)
+        //
         timerLb.text = ""
+        //
+        controlView.isHidden = true
     }
     
     @objc func timerAction(_ sender: Any) {
 
         let delegate = UIApplication.shared.delegate as! AppDelegate
-        let second: NSInteger = delegate.getSecend()
-        if (second <= 0) {
+        showSecond = delegate.getSecend()
+        if (showSecond <= 0) {
             self.reset()
         } else {
-            timerLb.text = "\(second)"
+            timerLb.text = "\(showSecond)"
+            
+            controlView.isHidden = false
         }
-    }
-    
-    // 提醒
-    func ringing() {
-        
     }
 }
 
