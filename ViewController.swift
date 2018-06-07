@@ -84,7 +84,8 @@ class ViewController: UIViewController {
         // 计时器暂停
         setTimerRunning(false)
         //
-        timerLb.text = ""
+        showSecond = 0
+        updateShowTime(showSecond)
         //
         controlView.isHidden = true
     }
@@ -93,13 +94,40 @@ class ViewController: UIViewController {
 
         let delegate = UIApplication.shared.delegate as! AppDelegate
         showSecond = delegate.getSecend()
+        updateShowTime(showSecond)
+
         if (showSecond <= 0) {
             self.reset()
         } else {
-            timerLb.text = "\(showSecond)"
-            
             controlView.isHidden = false
         }
+    }
+    
+    func updateShowTime(_ secondArg: NSInteger) {
+        print("showSecond:\(showSecond!)")
+        let time = transitionTime(secondArg)
+        timerLb.text = time
+        print("time:\(time)")
+    }
+    
+    func transitionTime(_ secondArg: NSInteger) -> String{
+        var second = secondArg
+        if (secondArg < 0){
+            second = -secondArg
+        }
+        let hour = second / 3600;
+        let hour_str = hour > 0 ? "\(hour)" : ""
+        let minute = (second % 3600) / 60;
+        let minute_str = minute >= 10 ? "\(minute)" : "0\(minute)"
+        let s = (second % 60);
+        let s_str = s >= 10 ? "\(s)" : "0\(s)"
+        
+        let ms = minute_str + ":" + s_str;
+        let time = hour > 0 ? (hour_str + ":" + ms) : ms
+        if (secondArg < 0){
+            return ("-" + time)
+        }
+        return time
     }
 }
 

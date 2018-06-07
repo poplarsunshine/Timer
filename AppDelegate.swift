@@ -50,7 +50,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss zz"
         let date = dateFormatter.date(from: dateString!)
         let aSecend = date?.timeIntervalSinceNow;
-        return (NSInteger)(aSecend!);
+        if (aSecend! < 0) {
+            print("Warning: getSecend:\(aSecend!)")
+            return 0
+        }
+        return (NSInteger)(aSecend!)
     }
     
     @objc func registerLocal() {
