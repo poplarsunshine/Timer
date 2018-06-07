@@ -9,6 +9,14 @@
 import UIKit
 import UserNotifications
 
+// TODO:
+/*
+ 1、暂停状态持久化
+ 2、App开启时的通知
+ 3、UI
+ 4、通知声音
+ */
+
 class ViewController: UIViewController {
     // UI
     @IBOutlet weak var timerLb: UILabel!

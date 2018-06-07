@@ -34,10 +34,10 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bs9-Qr-1cw">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="暂停">
+                                        <state key="normal" backgroundImage="pause">
                                             <color key="titleColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
-                                        <state key="selected" title="继续">
+                                        <state key="selected" backgroundImage="play">
                                             <color key="titleColor" red="0.76470588240000004" green="0.56470588239999997" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
@@ -47,7 +47,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVR-2a-tts" userLabel="重置">
                                         <rect key="frame" x="190" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="重置"/>
+                                        <state key="normal" backgroundImage="reset"/>
                                         <connections>
                                             <action selector="resetAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jvt-NW-1eq"/>
                                         </connections>
@@ -94,4 +94,9 @@
             <point key="canvasLocation" x="140" y="119.1904047976012"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="pause" width="200" height="200"/>
+        <image name="play" width="200" height="200"/>
+        <image name="reset" width="200" height="200"/>
+    </resources>
 </document>
