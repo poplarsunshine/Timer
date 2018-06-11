@@ -82,6 +82,8 @@ class ViewController: UIViewController {
     
     @IBAction func resetAction(_ sender: UIButton) {
         self.reset()
+        // 删除通知
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
     // 设置Timer 暂停/继续
@@ -99,9 +101,6 @@ class ViewController: UIViewController {
         } else {
             // 暂停
             timer.fireDate = Date.distantFuture
-            //
-            let center = UNUserNotificationCenter.current()
-            center.removeAllPendingNotificationRequests()
         }
     }
     

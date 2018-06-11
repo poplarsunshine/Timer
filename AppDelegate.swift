@@ -35,11 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
         let content = UNMutableNotificationContent()
-        content.title = ""
+        content.title = "Wake up!"
         content.subtitle = ""
         content.body = "Timer has run out"//内容
         content.badge = 1
-        content.sound = UNNotificationSound.default()
+        content.sound = UNNotificationSound(named: "meiXinMeiFei.aiff")
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: tSecond, repeats: false)
         let request = UNNotificationRequest.init(identifier: "LocalNotificationKey", content: content, trigger: trigger)
         center.add(request)
@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     @objc func registerLocal() {
         let center = UNUserNotificationCenter.current()
         center.delegate = self;
-        center.requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
             if granted {
                 print("UNUserNotificationCenter Yay!")
             } else {
@@ -105,24 +105,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-//    @available(iOS 10.0, *)
-//    func userNotificationCenter(center: UNUserNotificationCenter, willPresentNotification notification: UNNotification, withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void){
-//        let userInfo = notification.request.content.userInfo
-//        print("willPresentNotification:\(userInfo)")
-//        completionHandler([])
-//    }
-    
     //在应用内展示通知
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
-                                withCompletionHandler completionHandler:
-        @escaping (UNNotificationPresentationOptions) -> Void) {
-        let userInfo = notification.request.content.userInfo
-        print("willPresentNotification:\(userInfo)")
-        completionHandler([.alert, .sound])
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Update the app interface directly.
+        let content = notification.request.content
+        print("willPresent notification content:\(content)")
         
-        // 如果不想显示某个通知，可以直接用空 options 调用 completionHandler:
-        // completionHandler([])
+        // Play a sound.
+        completionHandler([UNNotificationPresentationOptions.sound, UNNotificationPresentationOptions.alert])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.notification.request.content.categoryIdentifier == "TIMER_EXPIRED" {
+            // Handle the actions for the expired timer.
+            if response.actionIdentifier == "SNOOZE_ACTION" {
+                // Invalidate the old timer and create a new one. . .
+            }
+            else if response.actionIdentifier == "STOP_ACTION" {
+                // Invalidate the timer. . .
+            }
+        }
+        
+        // Else handle actions for other notification types. . .
     }
 }
 
