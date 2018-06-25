@@ -58,6 +58,9 @@ class ViewController: UIViewController {
     // Slider
     @IBAction func timeSliderBegin(_ slider: UISlider) {
         setTimerRunning(false)
+        // 删除通知
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        
         controlView.isHidden = true
     }
     
@@ -77,7 +80,10 @@ class ViewController: UIViewController {
     }
 
     @IBAction func runAction(_ sender: UIButton) {
-        setTimerRunning(sender.isSelected)
+        let isRunning = setTimerRunning(sender.isSelected)
+        if (!isRunning) {
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        }
     }
     
     @IBAction func resetAction(_ sender: UIButton) {
@@ -87,7 +93,7 @@ class ViewController: UIViewController {
     }
     
     // 设置Timer 暂停/继续
-    func setTimerRunning(_ isRunning: Bool) {
+    func setTimerRunning(_ isRunning: Bool) -> Bool{
         let delegate = UIApplication.shared.delegate as! AppDelegate
         delegate.isRunning = isRunning
         switchBtn.isSelected = !isRunning
@@ -102,6 +108,7 @@ class ViewController: UIViewController {
             // 暂停
             timer.fireDate = Date.distantFuture
         }
+        return isRunning;
     }
     
     func reset() {
@@ -110,6 +117,7 @@ class ViewController: UIViewController {
         //
         showSecond = 0
         updateShowTime(showSecond)
+        self.timeSlier.value = Float(showSecond)/60.0
         //
         controlView.isHidden = true
     }
@@ -118,6 +126,7 @@ class ViewController: UIViewController {
 
         let delegate = UIApplication.shared.delegate as! AppDelegate
         showSecond = delegate.getSecend()
+        print("showSecond:\(showSecond!)")
         updateShowTime(showSecond)
         self.timeSlier.value = Float(showSecond)/60.0
 
@@ -129,7 +138,6 @@ class ViewController: UIViewController {
     }
     
     func updateShowTime(_ secondArg: NSInteger) {
-        print("showSecond:\(showSecond!)")
         let time = transitionTime(secondArg)
         timerLb.text = time
         print("time:\(time)")

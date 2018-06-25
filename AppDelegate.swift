@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         content.title = "Wake up!"
         content.subtitle = ""
         content.body = "Timer has run out"//内容
-        content.badge = 1
+//        content.badge = 1
         content.sound = UNNotificationSound(named: "meiXinMeiFei.aiff")
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: tSecond, repeats: false)
         let request = UNNotificationRequest.init(identifier: "LocalNotificationKey", content: content, trigger: trigger)
@@ -53,12 +53,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss zz"
         let date = dateFormatter.date(from: dateString!)
-        let aSecend = date?.timeIntervalSinceNow;
-        if (aSecend! < 0) {
-            print("Warning: getSecend:\(aSecend!)")
+        let aSecend = (date?.timeIntervalSinceNow)! + 1;
+        if (aSecend < 0) {
+            print("Warning: getSecend:\(aSecend)")
             return 0
         }
-        return (NSInteger)(aSecend!)
+        return (NSInteger)(aSecend)
     }
     
     @objc func registerLocal() {
